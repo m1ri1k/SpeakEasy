@@ -1,0 +1,359 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakEasy - тренировка публичных выступлений</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css?v=4" />
+</head>
+<body class="is-main-loading">
+  <div class="page-frame">
+    <header class="header">
+      <a class="logo" href="#top" aria-label="SpeakEasy">
+        <svg class="logo-icon" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <path d="M11 3h22a8 8 0 0 1 8 8v14a8 8 0 0 1-8 8H23l-5 9-2-9H11a8 8 0 0 1-8-8V11a8 8 0 0 1 8-8Z" fill="var(--blue)"/>
+          <rect x="13" y="12" width="4" height="10" rx="2" fill="white"/>
+          <rect x="20" y="8"  width="4" height="18" rx="2" fill="white"/>
+          <rect x="27" y="11" width="4" height="12" rx="2" fill="white"/>
+        </svg>
+        <span class="logo-text">SpeakEasy</span>
+      </a>
+
+      <nav class="nav" aria-label="Основная навигация">
+        <a href="#insights">Возможности</a>
+        <a href="#how">Как это работает</a>
+        <a href="#pricing">Тарифы</a>
+        <a href="#faq">Вопросы и ответы</a>
+      </nav>
+
+      <div class="profile-menu">
+        <button class="login-button" type="button" data-action="login">Войти</button>
+        <div class="profile-popover" aria-label="Меню профиля">
+          <a href="lk.html">Личный кабинет</a>
+          <button type="button" data-action="logout">Выйти</button>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="top">
+        <div class="hero-content">
+          <h1>Практикуйтесь в выступлениях.<br />Улучшайте речь без стресса.</h1>
+          <p>
+            Записывайте или загружайте выступления, получайте полезные
+            рекомендации и постепенно улучшайте навыки публичных выступлений
+          </p>
+
+          <div class="hero-actions">
+            <button class="primary-button" type="button" data-action="start">Начать</button>
+            <button class="secondary-button" type="button" data-action="try">Попробовать</button>
+          </div>
+        </div>
+
+        <img
+          class="hero-asset"
+          src="assets/banner.svg"
+          data-fallback="assets/banner.png"
+          alt=""
+          aria-hidden="true"
+        />
+      </section>
+
+      <section class="how-section" id="how">
+        <div class="section-title-row">
+          <h2>Как это работает ?</h2>
+          <div class="title-line"></div>
+        </div>
+
+        <div class="how-layout">
+          <div class="steps">
+            <article class="step">
+              <div class="step-number">1</div>
+              <div>
+                <h3>Выберите сценарий практики</h3>
+                <p>Выберите формат выступления для адаптации рекомендаций</p>
+              </div>
+            </article>
+
+            <article class="step">
+              <div class="step-number">2</div>
+              <div>
+                <h3>Запишите выступление</h3>
+                <p>Запишите или загрузите выступление в видео или аудиоформате</p>
+              </div>
+            </article>
+
+            <article class="step">
+              <div class="step-number">3</div>
+              <div>
+                <h3>Получите полезные советы</h3>
+                <p>Узнайте, как улучшить темп, чёткость и структуру речи</p>
+              </div>
+            </article>
+
+            <article class="step">
+              <div class="step-number">4</div>
+              <div>
+                <h3>Практикуйтесь регулярно</h3>
+                <p>Маленькие шаги приводят к заметному прогрессу</p>
+              </div>
+            </article>
+          </div>
+
+          <img
+            class="how-asset"
+            src="assets/how-it-works.svg"
+            data-fallback="assets/how-it-works.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </section>
+
+      <section class="insights-section" id="insights">
+        <div class="insights-heading">
+          <p>Что анализирует сервис</p>
+          <h2>SpeakEasy превращает выступление в понятные рекомендации</h2>
+        </div>
+
+        <div class="insights-layout">
+          <div class="insight-grid" aria-label="Метрики анализа">
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M12 14l4-4" />
+                  <path d="M3.34 19a10 10 0 1 1 17.32 0" />
+                </svg>
+              </span>
+              <h3>Скорость речи</h3>
+              <p>Считает слова в минуту и сравнивает темп с нормой для выбранного сценария.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <rect x="6" y="4" width="4" height="16" rx="1" />
+                  <rect x="14" y="4" width="4" height="16" rx="1" />
+                </svg>
+              </span>
+              <h3>Паузы</h3>
+              <p>Показывает среднюю и самую длинную паузу, чтобы речь звучала собраннее.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M11 5 6 9H3v6h3l5 4V5Z" />
+                  <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />
+                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14" />
+                </svg>
+              </span>
+              <h3>Громкость</h3>
+              <p>Оценивает уровень звука и помогает понять, комфортно ли слушать запись.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M21 15a4 4 0 0 1-4 4H8l-5 3V7a4 4 0 0 1 4-4h10a4 4 0 0 1 4 4Z" />
+                  <path d="M8 10h.01" />
+                  <path d="M12 10h.01" />
+                  <path d="M16 10h.01" />
+                </svg>
+              </span>
+              <h3>Слова-паразиты</h3>
+              <p>Находит частые “эм”, “ну” и другие слова-паразиты в транскрибации.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                  <circle cx="12" cy="12" r="3" />
+                </svg>
+              </span>
+              <h3>Взгляд в камеру</h3>
+              <p>Оценивает, как часто лицо направлено к камере во время видео-практики.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <circle cx="12" cy="8" r="4" />
+                  <path d="M6 21a6 6 0 0 1 12 0" />
+                  <path d="M12 12v3" />
+                </svg>
+              </span>
+              <h3>Положение головы</h3>
+              <p>Показывает заметные наклоны и повороты головы относительно кадра.</p>
+            </article>
+
+            <article class="insight-card">
+              <span class="insight-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24">
+                  <path d="M8 3H5a2 2 0 0 0-2 2v3" />
+                  <path d="M16 3h3a2 2 0 0 1 2 2v3" />
+                  <path d="M8 21H5a2 2 0 0 1-2-2v-3" />
+                  <path d="M16 21h3a2 2 0 0 0 2-2v-3" />
+                  <circle cx="12" cy="12" r="2" />
+                </svg>
+              </span>
+              <h3>Стабильность кадра</h3>
+              <p>Помогает заметить лишнее движение камеры или сильные смещения в кадре.</p>
+            </article>
+          </div>
+
+          <aside class="report-preview" aria-label="Пример отчета">
+            <div class="preview-header">
+              <span>Отчет</span>
+              <strong>98/100</strong>
+            </div>
+            <div class="preview-line"></div>
+            <div class="preview-metric good">
+              <span>Скорость речи</span>
+              <strong>В норме</strong>
+            </div>
+            <div class="preview-metric good">
+              <span>Паузы</span>
+              <strong>В норме</strong>
+            </div>
+            <div class="preview-metric good">
+              <span>Громкость</span>
+              <strong>В норме</strong>
+            </div>
+            <div class="preview-metric warning">
+              <span>Слова-паразиты</span>
+              <strong>Выше нормы</strong>
+            </div>
+            <div class="preview-metric good">
+              <span>Взгляд в камеру</span>
+              <strong>В норме</strong>
+            </div>
+            <div class="preview-note">
+              Попробуйте делать более короткие паузы между смысловыми блоками.
+            </div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="audience-section" id="features">
+        <h2>Для кого подходит сервис<br />SpeakEasy?</h2>
+
+        <div class="audience-map">
+          <article class="audience-card students-card">
+            <h3>Студенты и молодые<br />специалисты</h3>
+            <p>Подготовка к экзаменам, защитам и собеседованиям</p>
+          </article>
+
+          <article class="audience-card employees-card">
+            <h3>Сотрудники компаний</h3>
+            <p>Развитие навыков презентаций и деловой коммуникации</p>
+          </article>
+
+          <article class="audience-card anxiety-card">
+            <h3>Пользователи с тревогой</h3>
+            <p>Спокойная и безопасная практика</p>
+          </article>
+
+          <div class="route-line" aria-hidden="true"></div>
+
+          <img
+            class="audience-asset student-asset"
+            src="assets/students.svg"
+            data-fallback="assets/students.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="audience-asset employees-asset"
+            src="assets/employees.svg"
+            data-fallback="assets/employees.png"
+            alt=""
+            aria-hidden="true"
+          />
+          <img
+            class="audience-asset anxiety-asset"
+            src="assets/anxiety.svg"
+            data-fallback="assets/anxiety.png"
+            alt=""
+            aria-hidden="true"
+          />
+        </div>
+      </section>
+    </main>
+
+    <footer class="footer">
+      <a href="#terms">Условия</a>
+      <a href="#privacy">Политика конфиденциальности</a>
+      <a href="#contacts">Контакты</a>
+    </footer>
+  </div>
+
+  <div class="auth-modal" id="auth-modal" hidden>
+    <div class="auth-backdrop" data-auth-close></div>
+    <section class="auth-dialog" role="dialog" aria-modal="true" aria-labelledby="auth-title">
+      <button class="auth-close" type="button" aria-label="Закрыть" data-auth-close>×</button>
+
+      <div class="auth-tabs" role="tablist" aria-label="Авторизация">
+        <button class="auth-tab is-active" type="button" data-auth-mode="login">Вход</button>
+        <button class="auth-tab" type="button" data-auth-mode="register">Регистрация</button>
+      </div>
+
+      <h2 id="auth-title">Войти в SpeakEasy</h2>
+
+      <form class="auth-form" id="auth-form">
+        <label class="auth-field" data-name-field hidden>
+          <span>Имя</span>
+          <input type="text" name="name" autocomplete="name" minlength="1" maxlength="120" />
+        </label>
+
+        <label class="auth-field">
+          <span>Email</span>
+          <input type="email" name="email" autocomplete="email" required />
+        </label>
+
+        <label class="auth-field" data-password-field>
+          <span>Пароль</span>
+          <span class="password-control">
+            <input type="password" name="password" autocomplete="current-password" minlength="6" required />
+            <button class="password-toggle" type="button" data-password-toggle aria-label="Показать пароль" title="Показать пароль">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="eye-shape" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                <circle class="eye-pupil" cx="12" cy="12" r="3" />
+                <path class="eye-slash" d="M4 4l16 16" />
+              </svg>
+            </button>
+          </span>
+        </label>
+
+        <label class="auth-field" data-password-confirm-field hidden>
+          <span>Повторите пароль</span>
+          <span class="password-control">
+            <input type="password" name="password_confirm" autocomplete="new-password" minlength="6" />
+            <button class="password-toggle" type="button" data-password-confirm-toggle aria-label="Показать пароль" title="Показать пароль">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path class="eye-shape" d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7Z" />
+                <circle class="eye-pupil" cx="12" cy="12" r="3" />
+                <path class="eye-slash" d="M4 4l16 16" />
+              </svg>
+            </button>
+          </span>
+        </label>
+
+        <p class="auth-error" data-auth-error aria-live="polite"></p>
+        <div class="auth-status" data-auth-status hidden>
+          <p data-auth-status-text></p>
+          <a data-auth-reset-link href="#" hidden>Открыть ссылку сброса</a>
+        </div>
+        <button class="forgot-password-link" type="button" data-auth-forgot>Забыли пароль?</button>
+        <button class="auth-submit" type="submit">Войти</button>
+      </form>
+    </section>
+  </div>
+
+  <script src="script.js?v=4"></script>
+</body>
+</html>

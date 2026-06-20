@@ -1,0 +1,34 @@
+# Local secrets
+.env
+.env.*
+*.env
+secrets.env
+
+# Python
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.venv/
+venv/
+
+# Runtime data
+*.log
+*.db
+*.sqlite
+*.sqlite3
+backend/uploads/*
+!backend/uploads/.gitkeep
+backend/models/
+
+# Frontend dependencies/build output, if added later
+node_modules/
+dist/
+build/
+
+# Local editor/system files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

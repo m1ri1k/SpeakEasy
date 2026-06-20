@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Timeline Demo — SpeakEasy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --blue: #2563eb;
+      --blue-ui: #0571f0;
+      --blue-soft: #d2e6fd;
+      --blue-pale: #eef6ff;
+      --bg: #f3f6fa;
+      --panel: #ffffff;
+      --text: #0b1020;
+      --muted: #6f7785;
+      --line: #e8edf7;
+      --green: #49a47c;
+      --green-text: #146b45;
+      --green-bg: #ecf9f0;
+      --orange: #f27f46;
+      --orange-text: #9a3d0f;
+      --orange-bg: #fff1ea;
+      --shadow: 0 18px 42px rgba(48, 77, 128, 0.08);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      padding: 40px 24px 80px;
+      background: var(--bg);
+      font-family: "Manrope", Arial, sans-serif;
+      color: var(--text);
+    }
+
+    .demo-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      display: grid;
+      gap: 32px;
+    }
+
+    .demo-label {
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+      color: var(--muted);
+      margin: 0 0 10px;
+    }
+
+    /* ── CARD ────────────────────────────────────── */
+    .recording-card {
+      border-radius: 22px;
+      background: var(--panel);
+      box-shadow: var(--shadow);
+      padding: 28px;
+    }
+
+    .section-title {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      margin-bottom: 22px;
+    }
+
+    .title-icon {
+      width: 34px;
+      height: 34px;
+      flex: 0 0 auto;
+      fill: none;
+      stroke: var(--blue-ui);
+      stroke-width: 2.2;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .section-title h2 {
+      margin: 0;
+      font-size: 26px;
+      line-height: 1.25;
+    }
+
+    .eyebrow {
+      margin: 0 0 4px;
+      color: var(--blue-ui);
+      font-size: 13px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: .08em;
+    }
+
+    /* ── MEDIA PLAYER (mock) ─────────────────────── */
+    .mock-player {
+      width: 100%;
+      aspect-ratio: 16/9;
+      border-radius: 14px;
+      background: #0d1623;
+      display: grid;
+      place-items: center;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .mock-play-btn {
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(255,255,255,.15);
+      border: 2px solid rgba(255,255,255,.35);
+      display: grid;
+      place-items: center;
+      cursor: pointer;
+      transition: background .15s;
+    }
+
+    .mock-play-btn:hover { background: rgba(255,255,255,.25); }
+
+    .mock-play-btn svg {
+      width: 28px;
+      height: 28px;
+      fill: #fff;
+      stroke: none;
+    }
+
+    /* ── TIMELINE ────────────────────────────────── */
+    .timeline-card {
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #fafcff;
+      overflow: hidden;
+    }
+
+    /* top bar: title + time badge */
+    .timeline-topbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 14px 18px 0;
+      gap: 12px;
+    }
+
+    .timeline-topbar-left {
+      display: grid;
+      gap: 3px;
+    }
+
+    .timeline-topbar-left strong {
+      font-size: 15px;
+      line-height: 1.2;
+    }
+
+    .timeline-topbar-left span {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .timeline-time-badge {
+      flex: 0 0 auto;
+      background: var(--blue-pale);
+      color: var(--blue);
+      border-radius: 999px;
+      padding: 5px 12px;
+      font-size: 14px;
+      font-weight: 800;
+      font-variant-numeric: tabular-nums;
+      min-width: 52px;
+      text-align: center;
+    }
+
+    /* chart area */
+    .timeline-chart-wrap {
+      position: relative;
+      cursor: crosshair;
+      margin: 10px 0 0;
+    }
+
+    .timeline-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+
+    /* playhead */
+    .timeline-playhead {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      left: 0;
+      width: 2px;
+      pointer-events: none;
+      background: var(--text);
+      box-shadow: 0 0 0 3px rgba(11,16,32,.1);
+      transition: left .05s linear;
+    }
+
+    .timeline-playhead::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--text);
+    }
+
+    /* hover tooltip */
+    .timeline-tooltip {
+      position: absolute;
+      top: 8px;
+      transform: translateX(-50%);
+      background: rgba(11,16,32,.82);
+      color: #fff;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 9px;
+      border-radius: 8px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity .1s;
+      white-space: nowrap;
+    }
+
+    .timeline-chart-wrap:hover .timeline-tooltip { opacity: 1; }
+
+    /* ── PAUSE ROW ───────────────────────────────── */
+    .pause-row {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      padding: 12px 18px 16px;
+      flex-wrap: wrap;
+    }
+
+    .pause-row-label {
+      font-size: 12px;
+      font-weight: 800;
+      color: var(--muted);
+      text-transform: uppercase;
+      letter-spacing: .07em;
+      flex: 0 0 auto;
+    }
+
+    .pause-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 7px;
+    }
+
+    .pause-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      height: 32px;
+      border-radius: 999px;
+      padding: 0 12px;
+      font-size: 13px;
+      font-weight: 800;
+      border: 1px solid #ffd7cc;
+      background: #fff4ef;
+      color: var(--orange-text);
+      cursor: pointer;
+      transition: background .12s, border-color .12s, transform .1s;
+    }
+
+    .pause-chip:hover {
+      background: #ffe8df;
+      border-color: rgba(244,119,69,.55);
+      transform: translateY(-1px);
+    }
+
+    .pause-chip.active {
+      background: var(--orange);
+      border-color: var(--orange);
+      color: #fff;
+    }
+
+    .pause-chip-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: currentColor;
+      opacity: .7;
+      flex: 0 0 auto;
+    }
+
+    /* divider */
+    .pause-divider {
+      height: 1px;
+      background: var(--line);
+      margin: 0 18px;
+    }
+
+    /* ── LEGEND ──────────────────────────────────── */
+    .timeline-legend {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 10px 18px 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    .legend-swatch {
+      width: 20px;
+      height: 8px;
+      border-radius: 4px;
+    }
+
+    .legend-swatch.norm { background: rgba(73,164,124,.25); border: 1px solid rgba(73,164,124,.4); }
+    .legend-swatch.pause { background: rgba(239,89,96,.18); border: 1px solid rgba(239,89,96,.3); }
+    .legend-swatch.line { background: var(--blue); height: 3px; }
+
+    html,
+    body,
+    .demo-wrap,
+    .recording-card,
+    .timeline-card {
+      max-width: 100%;
+    }
+
+    svg,
+    canvas {
+      max-width: 100%;
+    }
+
+    .section-title > div,
+    .timeline-topbar-left,
+    .pause-chips {
+      min-width: 0;
+    }
+
+    .timeline-legend {
+      flex-wrap: wrap;
+    }
+
+    @media (max-width: 520px) {
+      body {
+        padding: 24px 16px 48px;
+      }
+
+      .recording-card {
+        padding: 18px;
+        border-radius: 18px;
+      }
+
+      .section-title,
+      .timeline-topbar {
+        flex-wrap: wrap;
+      }
+
+      .section-title h2 {
+        font-size: 22px;
+      }
+
+      .timeline-time-badge {
+        width: 100%;
+      }
+    }
+
+  </style>
+</head>
+<body>
+<div class="demo-wrap">
+
+  <div>
+    <p class="demo-label">Редизайн: запись и таймлайн</p>
+    <div class="recording-card">
+
+      <div class="section-title">
+        <svg class="title-icon" viewBox="0 0 24 24">
+          <circle cx="12" cy="12" r="10"/>
+          <path d="m10 8 6 4-6 4V8Z"/>
+        </svg>
+        <div>
+          <p class="eyebrow">Материал</p>
+          <h2>Запись и транскрибация</h2>
+        </div>
+      </div>
+
+      <!-- Mock video -->
+      <div class="mock-player">
+        <button class="mock-play-btn" id="playBtn" aria-label="Воспроизвести">
+          <svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z"/></svg>
+        </button>
+      </div>
+
+      <!-- NEW: timeline card, full-width under video -->
+      <div class="timeline-card">
+
+        <div class="timeline-topbar">
+          <div class="timeline-topbar-left">
+            <strong>Проверка по таймлайну</strong>
+            <span>Кликните по графику или паузе, чтобы прослушать этот момент</span>
+          </div>
+          <div class="timeline-time-badge" id="timeBadge">0:00</div>
+        </div>
+
+        <div class="timeline-chart-wrap" id="chartWrap">
+          <canvas class="timeline-svg" id="timelineCanvas" height="130"></canvas>
+          <div class="timeline-playhead" id="playhead"></div>
+          <div class="timeline-tooltip" id="tooltip"></div>
+        </div>
+
+        <div class="timeline-legend">
+          <div class="legend-item">
+            <div class="legend-swatch norm"></div>
+            Норма громкости
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch line"></div>
+            Громкость
+          </div>
+          <div class="legend-item">
+            <div class="legend-swatch pause"></div>
+            Длинная пауза
+          </div>
+        </div>
+
+        <div class="pause-divider"></div>
+
+        <div class="pause-row">
+          <span class="pause-row-label">Паузы &gt;5 сек</span>
+          <div class="pause-chips" id="pauseChips"></div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+/* ── MOCK DATA ─────────────────────────────────────── */
+const DURATION = 185; // 3:05
+
+// Generate realistic loudness points
+function mockLoudness() {
+  const pts = [];
+  for (let t = 0; t <= DURATION; t += 0.5) {
+    const base = -22 + Math.sin(t * 0.3) * 4 + Math.sin(t * 0.07) * 3;
+    const noise = (Math.random() - 0.5) * 10;
+    pts.push({ time: t, dbfs: Math.min(-5, base + noise) });
+  }
+  return pts;
+}
+
+const LOUDNESS_POINTS = mockLoudness();
+const NORM_MIN = -26;
+const NORM_MAX = -14;
+
+const LONG_PAUSES = [
+  { start: 0,   end: 10.0, duration: 10.0 },
+  { start: 18,  end: 29.3, duration: 11.3 },
+  { start: 51,  end: 87.7, duration: 36.7 },
+  { start: 102, end: 131.1, duration: 29.1 },
+  { start: 136, end: 158.3, duration: 22.3 },
+];
+
+/* ── HELPERS ───────────────────────────────────────── */
+function fmt(s) {
+  const sec = Math.max(0, Math.floor(s));
+  return `${Math.floor(sec/60)}:${String(sec%60).padStart(2,'0')}`;
+}
+
+/* ── CANVAS CHART ──────────────────────────────────── */
+const canvas  = document.getElementById('timelineCanvas');
+const ctx     = canvas.getContext('2d');
+const wrap    = document.getElementById('chartWrap');
+const playhead = document.getElementById('playhead');
+const timeBadge = document.getElementById('timeBadge');
+const tooltip = document.getElementById('tooltip');
+
+const PAD = { left: 44, right: 14, top: 18, bottom: 28 };
+const DB_MIN = -60, DB_MAX = 0;
+
+function resize() {
+  canvas.width  = wrap.clientWidth  * devicePixelRatio;
+  canvas.height = 130               * devicePixelRatio;
+  canvas.style.width  = wrap.clientWidth + 'px';
+  canvas.style.height = '130px';
+  draw();
+}
+
+function xFor(t)    { return PAD.left + (t / DURATION) * plotW(); }
+function yFor(db)   { return PAD.top  + ((DB_MAX - Math.max(DB_MIN, Math.min(DB_MAX, db))) / (DB_MAX - DB_MIN)) * plotH(); }
+function plotW()    { return (canvas.width / devicePixelRatio) - PAD.left - PAD.right; }
+function plotH()    { return (canvas.height / devicePixelRatio) - PAD.top - PAD.bottom; }
+
+function draw() {
+  const W = canvas.width  / devicePixelRatio;
+  const H = canvas.height / devicePixelRatio;
+  ctx.save();
+  ctx.scale(devicePixelRatio, devicePixelRatio);
+  ctx.clearRect(0, 0, W, H);
+
+  const pW = plotW(), pH = plotH();
+  const normTop    = yFor(NORM_MAX);
+  const normBottom = yFor(NORM_MIN);
+
+  // norm band
+  ctx.fillStyle = 'rgba(73,164,124,.13)';
+  ctx.fillRect(PAD.left, normTop, pW, normBottom - normTop);
+  // norm band borders
+  ctx.strokeStyle = 'rgba(73,164,124,.28)';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([4,6]);
+  ctx.beginPath(); ctx.moveTo(PAD.left, normTop);    ctx.lineTo(PAD.left + pW, normTop);    ctx.stroke();
+  ctx.beginPath(); ctx.moveTo(PAD.left, normBottom); ctx.lineTo(PAD.left + pW, normBottom); ctx.stroke();
+  ctx.setLineDash([]);
+
+  // pause bands
+  LONG_PAUSES.forEach(p => {
+    const x1 = xFor(p.start), x2 = xFor(p.end);
+    ctx.fillStyle = 'rgba(239,89,96,.13)';
+    ctx.fillRect(x1, PAD.top, x2 - x1, pH);
+    ctx.strokeStyle = 'rgba(239,89,96,.25)';
+    ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(x1, PAD.top); ctx.lineTo(x1, PAD.top + pH); ctx.stroke();
+    ctx.beginPath(); ctx.moveTo(x2, PAD.top); ctx.lineTo(x2, PAD.top + pH); ctx.stroke();
+  });
+
+  // area fill under loudness line
+  const grad = ctx.createLinearGradient(0, PAD.top, 0, PAD.top + pH);
+  grad.addColorStop(0,   'rgba(37,99,235,.22)');
+  grad.addColorStop(1,   'rgba(37,99,235,.01)');
+
+  ctx.beginPath();
+  LOUDNESS_POINTS.forEach((pt, i) => {
+    const x = xFor(pt.time), y = yFor(pt.dbfs);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  const last = LOUDNESS_POINTS.at(-1);
+  ctx.lineTo(xFor(last.time), PAD.top + pH);
+  ctx.lineTo(xFor(LOUDNESS_POINTS[0].time), PAD.top + pH);
+  ctx.closePath();
+  ctx.fillStyle = grad;
+  ctx.fill();
+
+  // loudness line
+  ctx.beginPath();
+  LOUDNESS_POINTS.forEach((pt, i) => {
+    const x = xFor(pt.time), y = yFor(pt.dbfs);
+    i === 0 ? ctx.moveTo(x, y) : ctx.lineTo(x, y);
+  });
+  ctx.strokeStyle = '#2563eb';
+  ctx.lineWidth = 2;
+  ctx.lineJoin = 'round';
+  ctx.lineCap = 'round';
+  ctx.stroke();
+
+  // axis bottom
+  ctx.strokeStyle = '#d5ddef';
+  ctx.lineWidth = 1;
+  ctx.setLineDash([]);
+  ctx.beginPath();
+  ctx.moveTo(PAD.left, PAD.top + pH);
+  ctx.lineTo(PAD.left + pW, PAD.top + pH);
+  ctx.stroke();
+
+  // Y labels
+  ctx.fillStyle = '#8a96ab';
+  ctx.font = `800 11px Manrope, Arial`;
+  ctx.textAlign = 'right';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(`${NORM_MAX}`, PAD.left - 5, normTop);
+  ctx.fillText(`${NORM_MIN}`, PAD.left - 5, normBottom);
+
+  // X labels
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'alphabetic';
+  ctx.fillText('0:00', PAD.left, H - 6);
+  ctx.textAlign = 'right';
+  ctx.fillText(fmt(DURATION), PAD.left + pW, H - 6);
+
+  ctx.restore();
+}
+
+/* ── PLAYHEAD ──────────────────────────────────────── */
+let currentTime = 0;
+
+function setTime(t) {
+  currentTime = Math.max(0, Math.min(DURATION, t));
+  const ratio = currentTime / DURATION;
+  playhead.style.left = (PAD.left + ratio * plotW()) + 'px';
+  timeBadge.textContent = fmt(currentTime);
+
+  // highlight active chip
+  document.querySelectorAll('.pause-chip').forEach(chip => {
+    const s = Number(chip.dataset.start), e = Number(chip.dataset.end);
+    chip.classList.toggle('active', currentTime >= s && currentTime <= e);
+  });
+}
+
+/* ── CHART INTERACTION ─────────────────────────────── */
+wrap.addEventListener('click', e => {
+  const rect = wrap.getBoundingClientRect();
+  const px = e.clientX - rect.left;
+  const ratio = Math.max(0, Math.min(1, (px - PAD.left) / plotW()));
+  setTime(ratio * DURATION);
+});
+
+wrap.addEventListener('mousemove', e => {
+  const rect = wrap.getBoundingClientRect();
+  const px = e.clientX - rect.left;
+  const ratio = Math.max(0, Math.min(1, (px - PAD.left) / plotW()));
+  const t = ratio * DURATION;
+  tooltip.textContent = fmt(t);
+  tooltip.style.left = px + 'px';
+});
+
+/* ── PAUSE CHIPS ───────────────────────────────────── */
+const chipsWrap = document.getElementById('pauseChips');
+
+LONG_PAUSES.forEach(p => {
+  const btn = document.createElement('button');
+  btn.className = 'pause-chip';
+  btn.dataset.start = p.start;
+  btn.dataset.end   = p.end;
+  btn.innerHTML = `<span class="pause-chip-dot"></span>${fmt(p.start)} · ${p.duration.toFixed(1)} сек`;
+  btn.addEventListener('click', () => setTime(p.start));
+  chipsWrap.appendChild(btn);
+});
+
+/* ── FAKE PLAYBACK ─────────────────────────────────── */
+let playing = false, raf = null, lastTs = null;
+
+document.getElementById('playBtn').addEventListener('click', () => {
+  playing = !playing;
+  document.getElementById('playBtn').innerHTML = playing
+    ? `<svg viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16" fill="white"/><rect x="14" y="4" width="4" height="16" fill="white"/></svg>`
+    : `<svg viewBox="0 0 24 24"><path d="M5 3l14 9-14 9V3z" fill="white"/></svg>`;
+  if (playing) { lastTs = null; requestAnimationFrame(tick); }
+  else if (raf) { cancelAnimationFrame(raf); raf = null; }
+});
+
+function tick(ts) {
+  if (!playing) return;
+  if (lastTs !== null) {
+    setTime(currentTime + (ts - lastTs) / 1000);
+    if (currentTime >= DURATION) { playing = false; setTime(0); return; }
+  }
+  lastTs = ts;
+  raf = requestAnimationFrame(tick);
+}
+
+/* ── INIT ──────────────────────────────────────────── */
+window.addEventListener('resize', resize);
+resize();
+setTime(0);
+</script>
+</body>
+</html>

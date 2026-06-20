@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakEasy - настройки</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="dashboard.css?v=11" />
+</head>
+<body>
+  <div class="dashboard-page">
+    <header class="topbar">
+      <a class="brand" href="main.html" aria-label="SpeakEasy">
+        <svg class="brand-mark" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <path d="M11 3h22a8 8 0 0 1 8 8v14a8 8 0 0 1-8 8H23l-5 9-2-9H11a8 8 0 0 1-8-8V11a8 8 0 0 1 8-8Z" fill="var(--blue)"/>
+          <rect x="13" y="12" width="4" height="10" rx="2" fill="white"/>
+          <rect x="20" y="8"  width="4" height="18" rx="2" fill="white"/>
+          <rect x="27" y="11" width="4" height="12" rx="2" fill="white"/>
+        </svg>
+        <span>SpeakEasy</span>
+      </a>
+
+      <div class="topbar-actions">
+        <div class="bell-wrap" data-bell-wrap>
+          <button class="icon-button" type="button" aria-label="Уведомления" data-bell-button>
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M18 8a6 6 0 0 0-12 0c0 7-3 8-3 8h18s-3-1-3-8" />
+              <path d="M13.73 21a2 2 0 0 1-3.46 0" />
+            </svg>
+            <span class="bell-dot" data-bell-dot hidden></span>
+          </button>
+          <div class="bell-dropdown" data-bell-dropdown hidden>
+            <p class="bell-dropdown-text" data-bell-text></p>
+            <div class="bell-dropdown-actions">
+              <a class="bell-dropdown-cta" href="lk.html">Записать практику</a>
+              <button class="bell-dropdown-dismiss" type="button" data-bell-dismiss>Скрыть</button>
+            </div>
+          </div>
+        </div>
+        <div class="profile-menu">
+          <button class="profile-button" type="button" aria-label="Профиль">
+            <span class="avatar"></span>
+          </button>
+          <div class="profile-popover" aria-label="Меню профиля">
+            <button type="button" data-action="logout">Выйти</button>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <main class="dashboard-layout">
+      <aside class="sidebar" aria-label="Разделы личного кабинета">
+        <a class="sidebar-item" href="lk.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 20h9" />
+            <path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5Z" />
+          </svg>
+          <span>Практика</span>
+        </a>
+        <a class="sidebar-item" href="archive.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M8 2v4" />
+            <path d="M16 2v4" />
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <path d="M3 10h18" />
+          </svg>
+          <span>Архив</span>
+        </a>
+        <a class="sidebar-item is-current" href="settings.html">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 15.5A3.5 3.5 0 1 0 12 8a3.5 3.5 0 0 0 0 7.5Z" />
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06A1.65 1.65 0 0 0 15 19.4a1.65 1.65 0 0 0-1 .6 1.65 1.65 0 0 0-.4 1.08V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 8 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 3.6 15a1.65 1.65 0 0 0-.6-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 8a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.6a1.65 1.65 0 0 0 1-.6 1.65 1.65 0 0 0 .4-1.08V3a2 2 0 1 1 4 0v.09A1.65 1.65 0 0 0 16 4.6a1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9c.36.31.8.52 1.28.6H21a2 2 0 1 1 0 4h-.09A1.65 1.65 0 0 0 19.4 15Z" />
+          </svg>
+          <span>Настройки</span>
+        </a>
+      </aside>
+
+      <section class="workspace" aria-label="Настройки">
+        <div class="workspace-inner">
+          <section class="archive-hero">
+            <div>
+              <p class="eyebrow">Настройки</p>
+              <h1>Настройки аккаунта</h1>
+            </div>
+          </section>
+
+          <section class="settings-section" aria-label="Уведомления">
+            <div class="section-heading">
+              <h2>Уведомления</h2>
+            </div>
+            <div class="settings-card">
+              <div class="settings-row">
+                <div class="settings-label">
+                  <strong>Напоминания о практике</strong>
+                  <span>Показывать уведомление в колокольчике, если давно не было новой записи</span>
+                </div>
+                <label class="toggle" aria-label="Включить напоминания">
+                  <input type="checkbox" id="reminderEnabled" />
+                  <span class="toggle-track"></span>
+                </label>
+              </div>
+              <div class="settings-row settings-interval" id="reminderIntervalRow" style="display:none">
+                <span class="settings-label-inline">Напоминать через</span>
+                <select id="reminderInterval">
+                  <option value="0.0007">1 минута (тест)</option>
+                  <option value="3">3 дня</option>
+                  <option value="7">7 дней</option>
+                  <option value="14">14 дней</option>
+                  <option value="30">30 дней</option>
+                </select>
+                <span class="settings-label-inline">без новых практик</span>
+              </div>
+            </div>
+          </section>
+        </div>
+      </section>
+    </main>
+
+    <footer class="dashboard-footer">
+      <a href="#terms">Условия</a>
+      <a href="#privacy">Политика конфиденциальности</a>
+      <a href="#contacts">Контакты</a>
+    </footer>
+  </div>
+
+  <script src="auth-utils.js?v=7"></script>
+  <script src="notifications.js?v=4"></script>
+  <script src="settings.js?v=3"></script>
+</body>
+</html>

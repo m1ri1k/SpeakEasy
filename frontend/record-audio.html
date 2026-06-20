@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>SpeakEasy - запись аудио</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="record.css?v=9" />
+</head>
+<body>
+  <div class="record-page audio-page">
+    <header class="record-topbar">
+      <a class="record-brand" href="main.html" aria-label="На главную">
+        <svg class="record-brand-mark" viewBox="0 0 44 44" fill="none" aria-hidden="true">
+          <path d="M11 3h22a8 8 0 0 1 8 8v14a8 8 0 0 1-8 8H23l-5 9-2-9H11a8 8 0 0 1-8-8V11a8 8 0 0 1 8-8Z" fill="var(--blue)"/>
+          <rect x="13" y="12" width="4" height="10" rx="2" fill="white"/>
+          <rect x="20" y="8"  width="4" height="18" rx="2" fill="white"/>
+          <rect x="27" y="11" width="4" height="12" rx="2" fill="white"/>
+        </svg>
+        <span>SpeakEasy</span>
+      </a>
+
+      <div class="record-status" aria-live="polite" data-record-status hidden>
+        <span class="record-dot" data-record-dot></span>
+        <strong data-status-text>Готово к записи аудио</strong>
+      </div>
+
+      <div class="record-topbar-actions">
+        <a class="return-button" href="lk.html" aria-label="Вернуться в кабинет">
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M15 18l-6-6 6-6" />
+          </svg>
+          <span>Кабинет</span>
+        </a>
+      </div>
+    </header>
+
+    <main class="record-main">
+      <section class="stage-card audio-stage" aria-label="Окно аудиозаписи">
+        <div class="audio-panel" data-audio-panel>
+          <div class="audio-mic" aria-hidden="true" data-audio-mic>
+            <svg viewBox="0 0 24 24">
+              <path d="M12 14a3 3 0 0 0 3-3V6a3 3 0 1 0-6 0v5a3 3 0 0 0 3 3Z" />
+              <path d="M19 11a7 7 0 0 1-14 0" />
+              <path d="M12 18v3" />
+              <path d="M8 21h8" />
+            </svg>
+          </div>
+
+          <div class="audio-wave" aria-hidden="true" data-audio-wave>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+
+          <div class="audio-caption">
+            <strong data-audio-heading>Готово к аудиопрактике</strong>
+            <span data-audio-copy>Выберите тип практики, нажмите «Начать запись» и говорите в комфортном темпе.</span>
+          </div>
+
+          <audio class="record-preview" controls data-audio-preview hidden></audio>
+          <p class="record-error" data-record-error hidden></p>
+        </div>
+      </section>
+
+      <aside class="record-sidebar" aria-label="Настройки и подсказки к записи">
+        <article class="support-card prompt-card">
+          <div class="card-title-row">
+            <h1>Тип практики</h1>
+          </div>
+          <div class="practice-type-picker" aria-label="Выбранный тип практики">
+            <div class="practice-type-current">
+              <span class="practice-type-kicker">Выбрано для записи</span>
+              <strong data-selected-scenario>Презентация</strong>
+            </div>
+            <button class="practice-type-toggle" type="button" aria-expanded="false" data-scenario-toggle>
+              <span class="sr-only">Изменить тип практики</span>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="m6 9 6 6 6-6" />
+              </svg>
+            </button>
+            <div class="practice-type-menu" data-scenario-menu hidden>
+              <button type="button" data-scenario-option="presentation">Презентация</button>
+              <button type="button" data-scenario-option="pitch">Бизнес-питч</button>
+              <button type="button" data-scenario-option="podcast">Подкаст</button>
+              <button type="button" data-scenario-option="free">Свободная практика</button>
+            </div>
+          </div>
+        </article>
+
+        <article class="support-card notes-card">
+          <div class="card-title-row">
+            <h2>Заметки</h2>
+            <button class="small-icon-button" type="button" aria-label="Очистить заметки" data-clear-notes>
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M4 7h16" />
+                <path d="M10 11v6" />
+                <path d="M14 11v6" />
+                <path d="M5 7l1 14h12l1-14" />
+                <path d="M9 7V4h6v3" />
+              </svg>
+            </button>
+          </div>
+          <textarea aria-label="Заметки к выступлению" data-record-notes placeholder="Например: не торопиться в середине рассказа..."></textarea>
+        </article>
+      </aside>
+    </main>
+
+    <div class="prep-modal" data-prep-modal hidden>
+      <div class="prep-backdrop" data-prep-close></div>
+      <section class="prep-dialog" role="dialog" aria-modal="true" aria-labelledby="audio-prep-title">
+        <div class="prep-header">
+          <span class="prep-kicker">Перед записью</span>
+          <button class="prep-close" type="button" aria-label="Закрыть подсказки" data-prep-close>×</button>
+          <h2 id="audio-prep-title">Быстрая проверка звука</h2>
+          <p>Дайте себе 20 секунд на настройку: так запись получится чище, а анализ будет полезнее.</p>
+        </div>
+        <ul class="prep-list">
+          <li>
+            <span aria-hidden="true">1</span>
+            <strong>Уберите посторонний шум</strong>
+            <p>Закройте окно, отложите телефон и выберите место без эха.</p>
+          </li>
+          <li>
+            <span aria-hidden="true">2</span>
+            <strong>Держите микрофон стабильно</strong>
+            <p>Держитесь на расстоянии 15-25 см от микрофона и не трогайте устройство во время выступления.</p>
+          </li>
+          <li>
+            <span aria-hidden="true">3</span>
+            <strong>Отключите отвлекающие уведомления</strong>
+            <p>Ближайшие несколько минут посвятите только практике выступления.</p>
+          </li>
+        </ul>
+        <div class="prep-countdown-choice" aria-label="Таймер обратного отсчета">
+          <strong>Таймер перед стартом</strong>
+          <div class="prep-countdown-options">
+            <label>
+              <input type="radio" name="audio-countdown" value="3" data-countdown-option checked />
+              <span>3 сек</span>
+            </label>
+            <label>
+              <input type="radio" name="audio-countdown" value="5" data-countdown-option />
+              <span>5 сек</span>
+            </label>
+            <label>
+              <input type="radio" name="audio-countdown" value="10" data-countdown-option />
+              <span>10 сек</span>
+            </label>
+          </div>
+        </div>
+        <div class="prep-actions">
+          <button class="prep-secondary" type="button" data-prep-close>Вернуться</button>
+          <button class="prep-primary" type="button" data-prep-start>Начать запись</button>
+        </div>
+      </section>
+    </div>
+
+    <div class="countdown-overlay" data-countdown-overlay hidden>
+      <div class="countdown-card" aria-live="assertive">
+        <span>Запись начнется через</span>
+        <strong data-countdown-value>3</strong>
+      </div>
+    </div>
+
+    <div class="title-modal" data-title-modal hidden>
+      <div class="title-backdrop" data-title-cancel></div>
+      <form class="title-dialog" data-title-form role="dialog" aria-modal="true" aria-labelledby="audio-title-modal-title">
+        <div class="title-header">
+          <span class="prep-kicker">Сохранение</span>
+          <button class="prep-close" type="button" aria-label="Закрыть окно названия" data-title-cancel>×</button>
+          <h2 id="audio-title-modal-title">Назовите запись</h2>
+          <p>Это название будет видно в личном кабинете и отчете.</p>
+        </div>
+        <label class="title-field">
+          <span>Название</span>
+          <input type="text" maxlength="120" data-title-input required />
+        </label>
+        <p class="title-error" data-title-error hidden></p>
+        <div class="prep-actions">
+          <button class="prep-secondary" type="button" data-title-cancel>Отмена</button>
+          <button class="prep-primary" type="submit" data-title-submit>Сохранить</button>
+        </div>
+      </form>
+    </div>
+
+    <div class="leave-modal" data-leave-modal hidden>
+      <div class="leave-backdrop" data-leave-cancel></div>
+      <section class="leave-dialog" role="dialog" aria-modal="true" aria-labelledby="audio-leave-title">
+        <div class="leave-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24">
+            <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" />
+            <path d="M12 9v4" />
+            <path d="M12 17h.01" />
+          </svg>
+        </div>
+        <h2 id="audio-leave-title">Уйти со страницы записи?</h2>
+        <p>Текущая запись будет прервана, а несохраненный результат потеряется.</p>
+        <div class="leave-actions">
+          <button class="prep-secondary" type="button" data-leave-cancel>Остаться</button>
+          <button class="leave-danger" type="button" data-leave-confirm>Уйти</button>
+        </div>
+      </section>
+    </div>
+
+    <footer class="record-controls" aria-label="Панель управления записью">
+      <button class="round-control" type="button" aria-label="Пауза" data-pause-record disabled>
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M8 5v14" />
+          <path d="M16 5v14" />
+        </svg>
+      </button>
+
+      <div class="timeline" aria-hidden="true">
+        <span data-record-progress></span>
+      </div>
+      <span class="control-time" data-control-time>00:00</span>
+
+      <button class="stop-button" type="button" data-main-record-action>Начать запись</button>
+
+      <div class="tool-buttons">
+        <button class="square-control" type="button" aria-label="Сохранить запись в черновик" title="Запись сохранится в черновик" data-save-draft disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2Z" />
+            <path d="M17 21v-8H7v8" />
+            <path d="M7 3v5h8" />
+          </svg>
+        </button>
+        <button class="square-control" type="button" aria-label="Обработать" title="Обработать" data-process-record disabled>
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M5 12h14" />
+            <path d="m13 6 6 6-6 6" />
+          </svg>
+        </button>
+      </div>
+    </footer>
+  </div>
+  <script src="auth-utils.js?v=7"></script>
+  <script src="record-audio.js?v=16"></script>
+</body>
+</html>

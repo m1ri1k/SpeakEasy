@@ -1,0 +1,17 @@
+fastapi==0.115.6
+boto3>=1.35
+python-dotenv>=1.0
+uvicorn[standard]==0.34.0
+sqlalchemy==2.0.36
+python-multipart==0.0.20
+email-validator==2.2.0
+numpy==1.26.4
+openai==1.59.7
+silero-vad==5.1.2
+imageio-ffmpeg==0.5.1
+openai-whisper==20250625
+faster-whisper>=1.0
+reportlab==4.2.5
+gigaam
+transformers>=4.41
+mediapipe==0.10.21
