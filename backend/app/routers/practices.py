@@ -32,7 +32,7 @@ from ..storage import delete_from_s3, download_from_s3, get_presigned_url, save_
 
 router = APIRouter(prefix="/api/practices", tags=["practices"])
 
-ALLOWED_EXTENSIONS = {".mp3", ".wav", ".m4a", ".mp4", ".mov", ".webm"}
+ALLOWED_EXTENSIONS = {".mp3", ".wav", ".mp4", ".mov", ".webm"}
 MIN_DURATION_SECONDS = 180   # 3 минуты
 MAX_DURATION_SECONDS = 900   # 15 минут
 TRASH_RETENTION_DAYS = 30
@@ -576,7 +576,7 @@ def upload_practice(
     if ext not in ALLOWED_EXTENSIONS:
         raise HTTPException(
             status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
-            detail=f"Недопустимый формат файла{f' «{ext}»' if ext else ''}. Принимаются: MP3, WAV, M4A, MP4, MOV, WEBM.",
+            detail=f"Недопустимый формат файла{f' «{ext}»' if ext else ''}. Принимаются: MP3, WAV, MP4, MOV, WEBM.",
         )
 
     saved_path = save_upload(file)

@@ -152,13 +152,13 @@
                 </div>
                 <div>
                   <h3>Загрузить файл</h3>
-                  <p>MP3, WAV, M4A · MP4, MOV, WEBM · от 3 до 15 минут</p>
+                  <p>MP3, WAV · MP4, MOV, WEBM · от 3 до 15 минут</p>
                 </div>
                 <label class="drop-zone">
-                  <input type="file" accept=".mp3,.wav,.m4a,.mp4,.mov,.webm" />
+                  <input type="file" accept=".mp3,.wav,.mp4,.mov,.webm" />
                   <span>Перетащите файл или выберите на компьютере</span>
                 </label>
-                <div class="upload-error" id="uploadError">
+                <div class="upload-error" id="uploadError" role="alert" aria-live="assertive">
                   <svg viewBox="0 0 24 24" aria-hidden="true">
                     <path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z"/>
                     <line x1="12" y1="9" x2="12" y2="13"/>
@@ -242,6 +242,6 @@
 
   <script src="auth-utils.js?v=7"></script>
   <script src="notifications.js?v=5"></script>
-  <script src="dashboard.js?v=22"></script>
+  <script src="dashboard.js?v=24"></script>
 </body>
 </html>

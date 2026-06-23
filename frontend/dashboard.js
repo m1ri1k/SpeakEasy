@@ -53,11 +53,14 @@ const scenarios = {
   },
 };
 
-const ALLOWED_EXTENSIONS = new Set([".mp3", ".wav", ".m4a", ".mp4", ".mov", ".webm"]);
-const AUDIO_EXTENSIONS = new Set([".mp3", ".wav", ".m4a", ".webm"]);
+const ALLOWED_EXTENSIONS = new Set([".mp3", ".wav", ".mp4", ".mov", ".webm"]);
+const AUDIO_EXTENSIONS = new Set([".mp3", ".wav", ".webm"]);
 const VIDEO_EXTENSIONS = new Set([".mp4", ".mov", ".webm"]);
 const MIN_DURATION_SEC = 3 * 60;
 const MAX_DURATION_SEC = 15 * 60;
+const UPLOAD_STALL_TIMEOUT_MS = 45000;
+const UPLOAD_OFFLINE_MESSAGE = "Соединение прервано. Проверьте интернет и попробуйте снова.";
+const UPLOAD_NETWORK_MESSAGE = "Не удалось загрузить файл. Проверьте интернет и попробуйте снова.";
 
 let selectedScenario = localStorage.getItem("speakeasy_selected_scenario") || "presentation";
 let currentHistoryFilter = "done";
@@ -402,6 +405,7 @@ function showUploadError(message, showRetry = false) {
   uploadErrorEl.classList.add("is-visible");
   const retryBtn = uploadErrorEl.querySelector(".upload-retry-btn");
   if (retryBtn) retryBtn.hidden = !showRetry;
+  uploadErrorEl.scrollIntoView({ behavior: "smooth", block: "center" });
 }
 
 function hideUploadError() {
@@ -462,7 +466,7 @@ async function validateFile(file) {
 
   if (!ALLOWED_EXTENSIONS.has(ext)) {
     throw new Error(
-      `Недопустимый формат файла${ext ? ` «${ext}»` : ""}. Принимаются: MP3, WAV, M4A, MP4, MOV, WEBM.`
+      `Недопустимый формат файла${ext ? ` «${ext}»` : ""}. Принимаются: MP3, WAV, MP4, MOV, WEBM.`
     );
   }
 
@@ -493,30 +497,82 @@ async function validateFile(file) {
 function uploadWithProgress(path, formData, onProgress) {
   return new Promise((resolve, reject) => {
     const request = new XMLHttpRequest();
+    let isSettled = false;
+    let wasOffline = false;
+    let offlinePollTimer = null;
+    let stallTimer = null;
+
+    function settle(callback, value) {
+      if (isSettled) return;
+      isSettled = true;
+      cleanup();
+      callback(value);
+    }
+
+    function resetStallTimer() {
+      if (stallTimer) {
+        clearTimeout(stallTimer);
+      }
+      stallTimer = setTimeout(() => {
+        request.abort();
+        settle(reject, new Error(navigator.onLine === false ? UPLOAD_OFFLINE_MESSAGE : UPLOAD_NETWORK_MESSAGE));
+      }, UPLOAD_STALL_TIMEOUT_MS);
+    }
+
+    function rejectForNetwork() {
+      settle(reject, new Error(wasOffline || navigator.onLine === false ? UPLOAD_OFFLINE_MESSAGE : UPLOAD_NETWORK_MESSAGE));
+    }
+
     request.open("POST", `${API_BASE_URL}${path}`);
     request.setRequestHeader("Authorization", `Bearer ${token}`);
 
     function cleanup() {
       window.removeEventListener("offline", onOffline);
+      if (offlinePollTimer) {
+        clearInterval(offlinePollTimer);
+        offlinePollTimer = null;
+      }
+      if (stallTimer) {
+        clearTimeout(stallTimer);
+        stallTimer = null;
+      }
     }
 
     function onOffline() {
+      wasOffline = true;
       request.abort();
-      cleanup();
-      reject(new Error("Соединение прервано. Проверьте интернет и попробуйте снова."));
+      settle(reject, new Error(UPLOAD_OFFLINE_MESSAGE));
+    }
+
+    if (navigator.onLine === false) {
+      settle(reject, new Error(UPLOAD_OFFLINE_MESSAGE));
+      return;
     }
 
     window.addEventListener("offline", onOffline);
+    offlinePollTimer = setInterval(() => {
+      if (navigator.onLine === false) {
+        onOffline();
+      }
+    }, 1000);
+    resetStallTimer();
 
     request.upload.addEventListener("progress", (event) => {
+      resetStallTimer();
       if (!event.lengthComputable || typeof onProgress !== "function") {
         return;
       }
       onProgress(Math.round((event.loaded / event.total) * 100));
     });
 
+    request.upload.addEventListener("loadend", () => {
+      if (stallTimer) {
+        clearTimeout(stallTimer);
+        stallTimer = null;
+      }
+    });
+
     request.addEventListener("load", () => {
-      cleanup();
       const data = request.responseText ? JSON.parse(request.responseText) : null;
 
       if (request.status === 401) {
@@ -524,25 +580,26 @@ function uploadWithProgress(path, formData, onProgress) {
         localStorage.removeItem("speakeasy_user");
         localStorage.removeItem("speakeasy_session_expires_at");
         window.location.href = "main.html";
-        resolve(null);
+        settle(resolve, null);
         return;
       }
 
       if (request.status < 200 || request.status >= 300) {
-        reject(new Error(data?.detail || "Ошибка API"));
+        settle(reject, new Error(data?.detail || "Ошибка API"));
         return;
       }
 
-      resolve(data);
+      settle(resolve, data);
     });
 
     request.addEventListener("error", () => {
-      cleanup();
-      reject(new Error("Не удалось загрузить файл. Проверьте интернет и попробуйте снова."));
+      rejectForNetwork();
     });
 
     request.addEventListener("abort", () => {
-      cleanup();
+      if (!isSettled) {
+        rejectForNetwork();
+      }
     });
 
     request.send(formData);
