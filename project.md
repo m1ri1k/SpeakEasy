@@ -112,39 +112,30 @@ SpeakEasy помогает пользователю получить обрат�
 - GitLab \- репозиторий.
 
 ### Схема
-
-\---  
-config:  
-layout: elk  
-\---
+```mermaid
+---
+config:
+  layout: elk
+---
 
 flowchart LR
+  U["Пользователь"] --> FE["Web Frontend"]
 
-U\\\["Пользователь"\\\] \\--\\\> FE\\\["Web Frontend"\\\]
+  subgraph APP["SpeakEasy"]
+    FE --> API["Backend"]
+    API --> DB[("SQLite")]
+    API --> AUTH["Модуль аутентификации"]
+    API --> MEDIA["Обработка медиафайлов"]
+    API --> ML["Анализ речи и видео"]
+    API --> REPORT["Формирование PDF-отчетов"]
 
-subgraph APP\\\["SpeakEasy"\\\]  
+    MEDIA --> ML
+    ML --> REPORT
+  end
 
-    FE \\--\\\> API\\\["Backend"\\\]
-
-    API \\--\\\> DB\\\[("SQLite")\\\]  
-
-    API \\--\\\> AUTH\\\["Модуль аутентификации"\\\]  
-
-    API \\--\\\> MEDIA\\\["Обработка медиафайлов"\\\]  
-
-    API \\--\\\> ML\\\["Анализ речи и видео"\\\]  
-
-    API \\--\\\> REPORT\\\["Формирование PDF-отчетов"\\\]
-
-    MEDIA \\--\\\> ML  
-
-    ML \\--\\\> REPORT  
-
-end
-
-API \\--\\\> STORE\\\[("Yandex Cloud Storage")\\\]
-
-APP \\-.-\\\>|исходный код проекта| GIT\\\["GitLab"\\\]
+  API --> STORE[("Yandex Cloud Storage")]
+  APP -.->|исходный код проекта| GIT["GitHub"]
+```
 
 Существенные границы доверия проходят между браузером пользователя и Backend SpeakEasy, между Backend и внешним хранилищем Yandex Cloud Storage, а также между локальной средой разработки и внешним Git-репозиторием.
 
